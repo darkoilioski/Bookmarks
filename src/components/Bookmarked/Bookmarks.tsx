@@ -79,6 +79,7 @@ const Bookmarks: React.FC<BookmarksProps> = ({ searchQuery = "" }) => {
   const handleEdit = () => {
     setBookmarkForUpdate(currentBookmark);
     setShowBookmarkModal(true);
+    setOpenDialog(false);
     handleCloseMenu();
   };
 
