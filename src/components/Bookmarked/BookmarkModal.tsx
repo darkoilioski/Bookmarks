@@ -1,5 +1,13 @@
 import React, { useEffect } from "react";
-import { Box, Button, Typography, Modal, Grid, TextField, Fade } from "@mui/material";
+import {
+  Box,
+  Button,
+  Typography,
+  Modal,
+  Grid,
+  TextField,
+  Fade,
+} from "@mui/material";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -63,7 +71,6 @@ const BookmarkModal: React.FC<AddBookmarkModalProps> = ({
   const onSubmit = (data: Schema) => {
     const { title, url, description } = data;
     onSubmitData(title, url, description);
-    // Reset the form fields after submission
     reset();
   };
 
@@ -142,5 +149,4 @@ const BookmarkModal: React.FC<AddBookmarkModalProps> = ({
     </Modal>
   );
 };
-
 export { BookmarkModal };
