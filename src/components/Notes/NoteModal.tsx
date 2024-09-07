@@ -1,5 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { Box, Button, Typography, Grid, IconButton, TextField } from "@mui/material";
+import {
+  Box,
+  Button,
+  Typography,
+  Grid,
+  IconButton,
+  TextField,
+} from "@mui/material";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -8,18 +15,30 @@ import "react-quill/dist/quill.snow.css";
 import { useNavigate, useParams } from "react-router-dom";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import DeleteIcon from "@mui/icons-material/Delete";
-import { Note, useCreateNoteMutation, useNoteQuery, useUpdateNoteMutation, useDeleteNoteMutation } from "../../api/queries/useNotes";
+import {
+  Note,
+  useCreateNoteMutation,
+  useNoteQuery,
+  useUpdateNoteMutation,
+  useDeleteNoteMutation,
+} from "../../api/queries/useNotes";
 
 const schema = z.object({
-  title: z.string().min(3, "Title must be at least 3 characters").max(50, "Title must be at most 50 characters"),
-  content: z.string().min(10, "Content must be at least 10 characters").max(3000, "Content must be at most 3000 characters"),
+  title: z
+    .string()
+    .min(3, "Title must be at least 3 characters")
+    .max(50, "Title must be at most 50 characters"),
+  content: z
+    .string()
+    .min(10, "Content must be at least 10 characters")
+    .max(3000, "Content must be at most 3000 characters"),
 });
 
 export type Schema = z.infer<typeof schema>;
 
 type NoteEditorProps = {
   note?: Note;
-}
+};
 
 const NoteEditor: React.FC<NoteEditorProps> = ({ note }: NoteEditorProps) => {
   const {
@@ -27,11 +46,11 @@ const NoteEditor: React.FC<NoteEditorProps> = ({ note }: NoteEditorProps) => {
     handleSubmit,
     formState: { errors },
     setValue,
-    reset
+    reset,
   } = useForm<Schema>({
     defaultValues: {
-      content: note?.content ?? '',
-      title: note?.title ?? '',
+      content: note?.content ?? "",
+      title: note?.title ?? "",
     },
     resolver: zodResolver(schema),
   });
@@ -57,7 +76,7 @@ const NoteEditor: React.FC<NoteEditorProps> = ({ note }: NoteEditorProps) => {
 
   const onSubmit = (data: Schema) => {
     const { title, content } = data;
-   
+
     if (note === undefined) {
       createNoteMutation.mutate(
         { title, content },
@@ -68,15 +87,18 @@ const NoteEditor: React.FC<NoteEditorProps> = ({ note }: NoteEditorProps) => {
         }
       );
     } else {
-      updateNoteMutation.mutate({
-        id: note.id,
-        title,
-        content,
-      }, {
-        onSuccess: () => {
-          navigate("/notes");
+      updateNoteMutation.mutate(
+        {
+          id: note.id,
+          title,
+          content,
         },
-      });
+        {
+          onSuccess: () => {
+            navigate("/notes");
+          },
+        }
+      );
     }
   };
 
@@ -85,12 +107,14 @@ const NoteEditor: React.FC<NoteEditorProps> = ({ note }: NoteEditorProps) => {
   };
 
   const handleDelete = () => {
-    const confirmed = window.confirm("Are you sure you want to delete this note?");
+    const confirmed = window.confirm(
+      "Are you sure you want to delete this note?"
+    );
     if (confirmed && note) {
       deleteNoteMutation.mutate(note.id, {
         onSuccess: () => {
           navigate("/notes");
-        }
+        },
       });
     }
   };
@@ -148,7 +172,6 @@ const NoteEditor: React.FC<NoteEditorProps> = ({ note }: NoteEditorProps) => {
             {title || "Untitled"} {/* Прикажи 'Untitled' ако title е празен */}
           </Typography>
         ) : (
-          
           <TextField
             {...register("title")}
             value={title}
@@ -170,13 +193,17 @@ const NoteEditor: React.FC<NoteEditorProps> = ({ note }: NoteEditorProps) => {
             }}
             placeholder="Title"
             error={!!errors.title}
-            helperText={errors.title ? errors.title.message : ""} 
+            helperText={errors.title ? errors.title.message : ""}
           />
         )}
 
         <Box sx={{ position: "absolute", right: 0, display: "flex", gap: 1 }}>
           {note && (
-            <IconButton sx={{ color: "#fff" }} onClick={handleDelete}>
+            <IconButton
+              sx={{ color: "#fff" }}
+              onClick={handleDelete}
+              title="Delete"
+            >
               <DeleteIcon />
             </IconButton>
           )}
@@ -205,11 +232,19 @@ const NoteEditor: React.FC<NoteEditorProps> = ({ note }: NoteEditorProps) => {
               <Typography color="error">{errors.content.message}</Typography>
             )}
           </Grid>
-          <Grid item xs={12} sx={{ display: "flex", justifyContent: "flex-end", gap: 2 }}>
+          <Grid
+            item
+            xs={12}
+            sx={{ display: "flex", justifyContent: "flex-end", gap: 2 }}
+          >
             <Button type="submit" variant="contained" color="primary">
               {note ? "Update" : "Add"}
             </Button>
-            <Button onClick={() => navigate("/notes")} variant="outlined" color="secondary">
+            <Button
+              onClick={() => navigate("/notes")}
+              variant="outlined"
+              color="secondary"
+            >
               Cancel
             </Button>
           </Grid>
@@ -228,7 +263,7 @@ function NoteEditorWrapper() {
   }
 
   if (noteId !== undefined && noteQuery.isError) {
-    return <div style={{ color: 'red' }}>Error: {noteQuery.error.message}</div>;
+    return <div style={{ color: "red" }}>Error: {noteQuery.error.message}</div>;
   }
 
   return <NoteEditor note={noteQuery.data ?? undefined} />;
