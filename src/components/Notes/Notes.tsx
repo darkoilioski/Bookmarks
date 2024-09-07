@@ -45,7 +45,7 @@ const Notes: React.FC<NotesProps> = ({ searchQuery = "" }) => {
   const updateNoteMutation = useUpdateNoteMutation();
 
   const handleOpenMenu = (event: React.MouseEvent<HTMLElement>, note: Note) => {
-    event.stopPropagation(); // Спречува пропагирање на настанот
+    event.stopPropagation();
     setAnchorEl(event.currentTarget);
     setSelectedNote(note);
   };
@@ -64,7 +64,7 @@ const Notes: React.FC<NotesProps> = ({ searchQuery = "" }) => {
   };
 
   const handleEmailNote = (note: Note) => {
-    const subject = encodeURIComponent(`Note: ${note.title}`);
+    const subject = encodeURIComponent(`${note.title}`);
     const body = encodeURIComponent(`${note.title}\n ${note.content}`);
     window.open(`mailto:?subject=${subject}&body=${stripHtml(body)}`, "_self");
     handleCloseMenu();
@@ -104,11 +104,11 @@ const Notes: React.FC<NotesProps> = ({ searchQuery = "" }) => {
                 >
                   <CardContent
                     sx={{
-                      maxHeight: 180, // Максимална висина на картичката
-                      overflow: "hidden", // Скриј го вишокот текст
-                      textOverflow: "ellipsis", // Прикажи тројки точки за предолг текст
+                      maxHeight: 180,
+                      overflow: "hidden",
+                      textOverflow: "ellipsis",
                       "&:hover": {
-                        overflow: "auto", // Прикажи го целиот текст кога корисникот ќе ја отвори картичката
+                        overflow: "auto",
                       },
                     }}
                   >

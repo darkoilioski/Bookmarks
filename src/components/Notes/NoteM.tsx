@@ -1,11 +1,18 @@
 import React, { useEffect } from "react";
-import { Box, Button, Typography, Modal, TextField, Grid, Fade } from "@mui/material";
+import {
+  Box,
+  Button,
+  Typography,
+  Modal,
+  TextField,
+  Grid,
+  Fade,
+} from "@mui/material";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Note } from "../../api/queries/useNotes";
 
-// Define validation schema with Zod
 const schema = z.object({
   title: z.string().min(3).max(50),
   content: z.string().min(10).max(200),
@@ -44,13 +51,12 @@ const NoteModal: React.FC<NoteModalProps> = ({
     formState: { errors },
     reset,
     setValue,
-
   } = useForm<Schema>({
     resolver: zodResolver(schema),
     defaultValues: {
       title: note?.title || "",
-      content: note?.content || ""
-    }
+      content: note?.content || "",
+    },
   });
 
   useEffect(() => {
@@ -92,7 +98,9 @@ const NoteModal: React.FC<NoteModalProps> = ({
                   label="Title"
                   fullWidth
                   error={!!errors.title}
-                  helperText={errors.title ? errors.title.message?.toString() : ""}
+                  helperText={
+                    errors.title ? errors.title.message?.toString() : ""
+                  }
                 />
               </Grid>
               <Grid item xs={12}>
@@ -103,10 +111,16 @@ const NoteModal: React.FC<NoteModalProps> = ({
                   rows={4}
                   fullWidth
                   error={!!errors.content}
-                  helperText={errors.content ? errors.content.message?.toString() : ""}
+                  helperText={
+                    errors.content ? errors.content.message?.toString() : ""
+                  }
                 />
               </Grid>
-              <Grid item xs={12} sx={{ display: "flex", justifyContent: "flex-end", gap: 2 }}>
+              <Grid
+                item
+                xs={12}
+                sx={{ display: "flex", justifyContent: "flex-end", gap: 2 }}
+              >
                 <Button type="submit" variant="contained" color="primary">
                   {note ? "Update" : "Add"}
                 </Button>

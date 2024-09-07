@@ -166,10 +166,10 @@ const NoteEditor: React.FC<NoteEditorProps> = ({ note }: NoteEditorProps) => {
               whiteSpace: "nowrap",
               textOverflow: "ellipsis",
               cursor: "pointer",
-              color: errors.title ? "red" : "inherit", // Прикажи црвена боја ако има грешка
+              color: errors.title ? "red" : "inherit",
             }}
           >
-            {title || "Untitled"} {/* Прикажи 'Untitled' ако title е празен */}
+            {title || "Untitled"}
           </Typography>
         ) : (
           <TextField
