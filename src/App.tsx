@@ -9,7 +9,7 @@ import {
 import { AppBar, Toolbar, Button } from "@mui/material";
 import { styled } from "@mui/system";
 import MyLibrary from "./components/MyLibrary";
-import NoteEditor from "./components/Notes/NoteModal";
+import NoteEditor from "./components/Notes/NoteEditor";
 import logo from "./assets/DILOGO.png";
 
 const Logo = styled("img")({

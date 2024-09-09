@@ -12,7 +12,6 @@ import {
 } from "@mui/material";
 import NoteIcon from "@mui/icons-material/Note";
 import ShareIcon from "@mui/icons-material/Share";
-import { NoteModal } from "./NoteM";
 import {
   Note,
   useNotesQuery,
@@ -37,15 +36,12 @@ const Notes: React.FC<NotesProps> = ({ searchQuery = "" }) => {
   const navigate = useNavigate();
 
   // Состојби за управување со модал, мени и селектирана белешка
-  const [showNoteModal, setShowNoteModal] = useState(false);
-  const [noteForUpdate, setNoteForUpdate] = useState<Note>();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [selectedNote, setSelectedNote] = useState<Note | null>(null);
 
   // Преземање на белешките и дефинирање на мутации за креирање и ажурирање
   const notesQuery = useNotesQuery();
   const createNoteMutation = useCreateNoteMutation();
-  const updateNoteMutation = useUpdateNoteMutation();
 
   // Отворање и затворање на мени за акција (копирање или испраќање белешка преку е-пошта)
   const handleOpenMenu = (event: React.MouseEvent<HTMLElement>, note: Note) => {
@@ -176,30 +172,6 @@ const Notes: React.FC<NotesProps> = ({ searchQuery = "" }) => {
           Email to
         </MenuItem>
       </Menu>
-      {/* Модал за креирање или ажурирање на белешка */}
-      {showNoteModal && (
-        <NoteModal
-          open={showNoteModal}
-          onClose={() => {
-            setShowNoteModal(false);
-            setNoteForUpdate(undefined);
-          }}
-          onSubmitData={(title, content) => {
-            if (noteForUpdate) {
-              updateNoteMutation.mutate({
-                ...noteForUpdate,
-                title,
-                content,
-              });
-              setShowNoteModal(false);
-            } else {
-              createNoteMutation.mutate({ title, content });
-              setShowNoteModal(false);
-            }
-          }}
-          note={noteForUpdate}
-        />
-      )}
     </>
   );
 };
