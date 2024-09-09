@@ -1,5 +1,5 @@
 // bookmarksService.ts
-import supabase from './supabase'; // Импортирај го конфигурираниот Supabase клиент
+import supabase from "./supabase"; // Импортирај го конфигурираниот Supabase клиент
 // src/bookmarksService.ts
 export type Bookmark = {
   id: string;
@@ -9,10 +9,12 @@ export type Bookmark = {
 };
 
 // Функција за додавање нов документ
-const addBookmark = async (bookmark: { title: string; url: string; description: string }) => {
-  const { data, error } = await supabase
-    .from('bookmarks')
-    .insert([bookmark]);
+const addBookmark = async (bookmark: {
+  title: string;
+  url: string;
+  description: string;
+}) => {
+  const { data, error } = await supabase.from("bookmarks").insert([bookmark]);
 
   if (error) {
     console.error("Error adding document:", error);
@@ -24,9 +26,9 @@ const addBookmark = async (bookmark: { title: string; url: string; description: 
 // Функција за бришење на документ
 const deleteBookmark = async (id: string) => {
   const { data, error } = await supabase
-    .from('bookmarks')
+    .from("bookmarks")
     .delete()
-    .eq('id', id);
+    .eq("id", id);
 
   if (error) {
     console.error("Error deleting document:", error);
@@ -36,11 +38,14 @@ const deleteBookmark = async (id: string) => {
 };
 
 // Функција за ажурирање на документ
-const updateBookmark = async (id: string, updates: { title?: string; url?: string; description?: string }) => {
+const updateBookmark = async (
+  id: string,
+  updates: { title?: string; url?: string; description?: string }
+) => {
   const { data, error } = await supabase
-    .from('bookmarks')
+    .from("bookmarks")
     .update(updates)
-    .eq('id', id);
+    .eq("id", id);
 
   if (error) {
     console.error("Error updating document:", error);
@@ -51,9 +56,7 @@ const updateBookmark = async (id: string, updates: { title?: string; url?: strin
 
 // Функција за земање на документи
 const getBookmarks = async () => {
-  const { data, error } = await supabase
-    .from('bookmarks')
-    .select('*');
+  const { data, error } = await supabase.from("bookmarks").select("*");
 
   if (error) {
     console.error("Error fetching documents:", error);
