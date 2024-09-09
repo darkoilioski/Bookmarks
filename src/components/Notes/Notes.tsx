@@ -16,7 +16,6 @@ import {
   Note,
   useNotesQuery,
   useCreateNoteMutation,
-  useUpdateNoteMutation,
 } from "../../api/queries/useNotes";
 import { useNavigate } from "react-router-dom";
 import parse from "html-react-parser";
