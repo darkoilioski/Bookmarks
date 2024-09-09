@@ -274,21 +274,34 @@ const Bookmarks: React.FC<BookmarksProps> = ({ searchQuery = "" }) => {
         </DialogContent>
         {/* Копчиња за акција во дијалогот */}
         <DialogActions sx={{ justifyContent: "space-between" }}>
+          <Box>
+            <Button
+              onClick={handleEdit}
+              variant="contained"
+              color="secondary"
+              sx={{ fontWeight: "bold", mr: 2, backgroundColor: "#3F98E5" }}
+            >
+              Edit
+            </Button>
+            <Button
+              onClick={() => handleDelete(currentBookmark!.id)}
+              variant="contained"
+              color="error"
+              sx={{ fontWeight: "bold" }}
+            >
+              Delete
+            </Button>
+          </Box>
           <Button
-            onClick={handleEdit}
+            onClick={() => handleCloseDialog()}
             variant="contained"
-            color="secondary"
-            sx={{ fontWeight: "bold", mr: 2, backgroundColor: "#3F98E5" }}
+            sx={{
+              backgroundColor: "white",
+              color: "blue",
+              border: "2px solid lightblue",
+            }}
           >
-            Edit
-          </Button>
-          <Button
-            onClick={() => handleDelete(currentBookmark!.id)}
-            variant="contained"
-            color="error"
-            sx={{ fontWeight: "bold" }}
-          >
-            Delete
+            Close
           </Button>
         </DialogActions>
       </Dialog>
