@@ -5,6 +5,7 @@ import { NavLink } from "react-router-dom";
 const SidebarMenu: React.FC = () => {
   return (
     <List component="nav" sx={{ width: "175px" }}>
+      {/* Ставка во мени за навигација кон Bookmarks */}
       <ListItem button component="a" sx={{ width: "175px" }}>
         <NavLink
           to="/bookmarks"
@@ -17,6 +18,7 @@ const SidebarMenu: React.FC = () => {
           <ListItemText primary="Bookmarks" />
         </NavLink>
       </ListItem>
+      {/* Ставка во мени за навигација кон Notes */}
       <ListItem button component="a" sx={{ width: "175px" }}>
         <NavLink
           to="/notes"

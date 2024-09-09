@@ -26,6 +26,7 @@ type NotesProps = {
   searchQuery?: string;
 };
 
+// Функција која го отстранува HTML-от од текст
 function stripHtml(htmlNote: string): string {
   const div = document.createElement("div");
   div.innerHTML = decodeURIComponent(htmlNote);
@@ -35,15 +36,18 @@ function stripHtml(htmlNote: string): string {
 const Notes: React.FC<NotesProps> = ({ searchQuery = "" }) => {
   const navigate = useNavigate();
 
+  // Состојби за управување со модал, мени и селектирана белешка
   const [showNoteModal, setShowNoteModal] = useState(false);
   const [noteForUpdate, setNoteForUpdate] = useState<Note>();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [selectedNote, setSelectedNote] = useState<Note | null>(null);
 
+  // Преземање на белешките и дефинирање на мутации за креирање и ажурирање
   const notesQuery = useNotesQuery();
   const createNoteMutation = useCreateNoteMutation();
   const updateNoteMutation = useUpdateNoteMutation();
 
+  // Отворање и затворање на мени за акција (копирање или испраќање белешка преку е-пошта)
   const handleOpenMenu = (event: React.MouseEvent<HTMLElement>, note: Note) => {
     event.stopPropagation();
     setAnchorEl(event.currentTarget);
@@ -55,6 +59,7 @@ const Notes: React.FC<NotesProps> = ({ searchQuery = "" }) => {
     setSelectedNote(null);
   };
 
+  // Функција за копирање на содржината на белешката во clipboard
   const handleCopyToClipboard = (note: Note) => {
     navigator.clipboard.writeText(
       `Title: ${note.title}\nContent: ${note.content}`
@@ -63,6 +68,7 @@ const Notes: React.FC<NotesProps> = ({ searchQuery = "" }) => {
     handleCloseMenu();
   };
 
+  // Функција за испраќање на белешката преку е-пошта
   const handleEmailNote = (note: Note) => {
     const subject = encodeURIComponent(`${note.title}`);
     const body = encodeURIComponent(`${note.title}\n ${note.content}`);
@@ -72,6 +78,7 @@ const Notes: React.FC<NotesProps> = ({ searchQuery = "" }) => {
 
   return (
     <>
+      {/* Секција за прикажување на сите белешки во форма на карти */}
       <Box sx={{ padding: 2 }}>
         <Grid container spacing={2}>
           {notesQuery.isPending && <Box>LOADING ...</Box>}
@@ -112,6 +119,7 @@ const Notes: React.FC<NotesProps> = ({ searchQuery = "" }) => {
                       },
                     }}
                   >
+                    {/* Прикажување на насловот и содржината на белешката */}
                     <Box
                       sx={{
                         display: "flex",
@@ -155,6 +163,7 @@ const Notes: React.FC<NotesProps> = ({ searchQuery = "" }) => {
             ))}
         </Grid>
       </Box>
+      {/* Мени за акција со опции за копирање или испраќање белешка преку е-пошта */}
       <Menu
         anchorEl={anchorEl}
         open={Boolean(anchorEl)}
@@ -167,6 +176,7 @@ const Notes: React.FC<NotesProps> = ({ searchQuery = "" }) => {
           Email to
         </MenuItem>
       </Menu>
+      {/* Модал за креирање или ажурирање на белешка */}
       {showNoteModal && (
         <NoteModal
           open={showNoteModal}

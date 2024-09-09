@@ -13,6 +13,7 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Note } from "../../api/queries/useNotes";
 
+// Шема за валидација
 const schema = z.object({
   title: z.string().min(3).max(50),
   content: z.string().min(10).max(200),
@@ -20,6 +21,7 @@ const schema = z.object({
 
 export type Schema = z.infer<typeof schema>;
 
+// Стилови за модалот
 const style = {
   position: "absolute" as const,
   top: "50%",
@@ -39,6 +41,7 @@ type NoteModalProps = {
   note?: Note;
 };
 
+// Компонента за модалот на белешката
 const NoteModal: React.FC<NoteModalProps> = ({
   open,
   onClose,
@@ -98,9 +101,7 @@ const NoteModal: React.FC<NoteModalProps> = ({
                   label="Title"
                   fullWidth
                   error={!!errors.title}
-                  helperText={
-                    errors.title ? errors.title.message?.toString() : ""
-                  }
+                  helperText={errors.title?.message}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -111,9 +112,7 @@ const NoteModal: React.FC<NoteModalProps> = ({
                   rows={4}
                   fullWidth
                   error={!!errors.content}
-                  helperText={
-                    errors.content ? errors.content.message?.toString() : ""
-                  }
+                  helperText={errors.content?.message}
                 />
               </Grid>
               <Grid

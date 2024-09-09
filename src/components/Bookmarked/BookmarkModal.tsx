@@ -35,6 +35,7 @@ const style = {
   p: 4,
 };
 
+// Типови на пропсите за компонентата BookmarkModal
 type AddBookmarkModalProps = {
   open: boolean;
   onClose: () => void;
@@ -60,10 +61,12 @@ const BookmarkModal: React.FC<AddBookmarkModalProps> = ({
 
   useEffect(() => {
     if (bookmark) {
+      // Ако имаме обележувач, поставуваме неговите вредности во формата
       setValue("url", bookmark.url);
       setValue("title", bookmark.title);
       setValue("description", bookmark.description);
     } else {
+      // Ако нема обележувач, рестартирај ја формата
       reset();
     }
   }, [bookmark, setValue, reset]);
@@ -149,4 +152,5 @@ const BookmarkModal: React.FC<AddBookmarkModalProps> = ({
     </Modal>
   );
 };
+
 export { BookmarkModal };
