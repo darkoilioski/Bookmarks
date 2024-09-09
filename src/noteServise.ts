@@ -1,21 +1,24 @@
 // src/noteService.ts
-import supabase from './supabase'; // Импортирај ја инстанцата на Supabase
-import { Note, CreateNotePayload } from './api/queries/useNotes'; // Замени го со патот до типови
+import supabase from "./supabase"; // Импортирај ја инстанцата на Supabase
+import { Note, CreateNotePayload } from "./api/queries/useNotes"; // Замени го со патот до типови
 
 // Функција за додавање нова забелешка
 const addNote = async ({ title, content }: CreateNotePayload) => {
   try {
     // Добијте го тековниот аутентициран корисник
-    const { data: { user }, error: authError } = await supabase.auth.getUser();
+    const {
+      data: { user },
+      error: authError,
+    } = await supabase.auth.getUser();
 
     if (authError || !user) {
       throw new Error("User not authenticated");
     }
 
     const { error } = await supabase
-      .from('notes')
+      .from("notes")
       .insert([{ title, content, user_id: user.id }]); // Додадете го user_id во новиот запис
- 
+
     if (error) throw new Error(error.message);
     console.log("Note added successfully");
   } catch (e) {
@@ -26,10 +29,7 @@ const addNote = async ({ title, content }: CreateNotePayload) => {
 // Функција за бришење на забелешка
 const deleteNote = async (noteId: string) => {
   try {
-    const { error } = await supabase
-      .from('notes')
-      .delete()
-      .eq('id', noteId);
+    const { error } = await supabase.from("notes").delete().eq("id", noteId);
 
     if (error) throw new Error(error.message);
     console.log("Note deleted successfully");
@@ -42,9 +42,9 @@ const deleteNote = async (noteId: string) => {
 const updateNote = async ({ id, title, content }: Note) => {
   try {
     const { error } = await supabase
-      .from('notes')
+      .from("notes")
       .update({ title, content })
-      .eq('id', id);
+      .eq("id", id);
 
     if (error) throw new Error(error.message);
     console.log("Note updated successfully");
@@ -56,9 +56,7 @@ const updateNote = async ({ id, title, content }: Note) => {
 // Функција за земање на забелешки
 const getNotes = async (): Promise<Note[]> => {
   try {
-    const { data, error } = await supabase
-      .from('notes')
-      .select('*');
+    const { data, error } = await supabase.from("notes").select("*");
 
     if (error) throw new Error(error.message);
     console.log("Fetched notes:", data);
@@ -73,10 +71,10 @@ const getNotes = async (): Promise<Note[]> => {
 const getNote = async (id: string): Promise<Note | null> => {
   try {
     const { data, error } = await supabase
-      .from('notes')
-      .select('*')
-      .eq('id', id)
-      .single();;
+      .from("notes")
+      .select("*")
+      .eq("id", id)
+      .single();
 
     if (error) throw new Error(error.message);
     console.log("Fetched notes:", data);
