@@ -23,7 +23,6 @@ import {
   useDeleteNoteMutation,
 } from "../../api/queries/useNotes";
 
-// Дефинирање на шема за валидација користејќи zod
 const schema = z.object({
   title: z
     .string()
@@ -36,13 +35,12 @@ const schema = z.object({
 });
 
 export type Schema = z.infer<typeof schema>;
+
 type NoteEditorProps = {
   note?: Note;
 };
 
-// Компонента за уредување на белешки
 const NoteEditor: React.FC<NoteEditorProps> = ({ note }: NoteEditorProps) => {
-  // rhf
   const {
     register,
     handleSubmit,
@@ -57,7 +55,6 @@ const NoteEditor: React.FC<NoteEditorProps> = ({ note }: NoteEditorProps) => {
     resolver: zodResolver(schema),
   });
 
-  // Декларација на мутации за создавање, ажурирање и бришење белешки
   const updateNoteMutation = useUpdateNoteMutation();
   const deleteNoteMutation = useDeleteNoteMutation();
   const [content, setContent] = useState<string>("");
@@ -66,7 +63,6 @@ const NoteEditor: React.FC<NoteEditorProps> = ({ note }: NoteEditorProps) => {
   const navigate = useNavigate();
   const createNoteMutation = useCreateNoteMutation();
 
-  // Ажурирање на вредностите во формата кога белешката се менува
   useEffect(() => {
     if (note) {
       setValue("title", note.title);
@@ -78,7 +74,6 @@ const NoteEditor: React.FC<NoteEditorProps> = ({ note }: NoteEditorProps) => {
     }
   }, [note, setValue, reset]);
 
-  // Функција за обработка на поднесување на форма
   const onSubmit = (data: Schema) => {
     const { title, content } = data;
 
@@ -107,12 +102,10 @@ const NoteEditor: React.FC<NoteEditorProps> = ({ note }: NoteEditorProps) => {
     }
   };
 
-  // Функција за обработка на промена на насловот
   const handleTitleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setTitle(event.target.value);
   };
 
-  // Функција за бришење на белешката
   const handleDelete = () => {
     const confirmed = window.confirm(
       "Are you sure you want to delete this note?"
@@ -153,7 +146,6 @@ const NoteEditor: React.FC<NoteEditorProps> = ({ note }: NoteEditorProps) => {
           margin: "0 auto",
         }}
       >
-        {/* Дугме за враќање назад */}
         <IconButton
           onClick={() => navigate("/notes")}
           sx={{ position: "absolute", left: 0, color: "#fff" }}
@@ -162,7 +154,6 @@ const NoteEditor: React.FC<NoteEditorProps> = ({ note }: NoteEditorProps) => {
           <ArrowBackIcon />
         </IconButton>
 
-        {/* Прикажување на насловот на белешката */}
         {!isTitleEditing ? (
           <Typography
             onClick={() => setIsTitleEditing(true)}
@@ -175,10 +166,10 @@ const NoteEditor: React.FC<NoteEditorProps> = ({ note }: NoteEditorProps) => {
               whiteSpace: "nowrap",
               textOverflow: "ellipsis",
               cursor: "pointer",
-              color: errors.title ? "red" : "inherit",
+              color: errors.title ? "red" : "inherit", // Прикажи црвена боја ако има грешка
             }}
           >
-            {title || "Untitled"}
+            {title || "Untitled"} {/* Прикажи 'Untitled' ако title е празен */}
           </Typography>
         ) : (
           <TextField
@@ -206,7 +197,6 @@ const NoteEditor: React.FC<NoteEditorProps> = ({ note }: NoteEditorProps) => {
           />
         )}
 
-        {/* Дугме за бришење белешка */}
         <Box sx={{ position: "absolute", right: 0, display: "flex", gap: 1 }}>
           {note && (
             <IconButton
@@ -222,7 +212,6 @@ const NoteEditor: React.FC<NoteEditorProps> = ({ note }: NoteEditorProps) => {
       <form onSubmit={handleSubmit(onSubmit)}>
         <Grid container spacing={2}>
           <Grid item xs={12}>
-            {/* Редактор на содржина со ReactQuill */}
             <ReactQuill
               value={content}
               onChange={(value) => {
@@ -239,7 +228,6 @@ const NoteEditor: React.FC<NoteEditorProps> = ({ note }: NoteEditorProps) => {
                 ],
               }}
             />
-            {/* Приказ на грешки за содржината */}
             {errors.content && (
               <Typography color="error">{errors.content.message}</Typography>
             )}
@@ -249,11 +237,9 @@ const NoteEditor: React.FC<NoteEditorProps> = ({ note }: NoteEditorProps) => {
             xs={12}
             sx={{ display: "flex", justifyContent: "flex-end", gap: 2 }}
           >
-            {/* Дугме за зачувување */}
             <Button type="submit" variant="contained" color="primary">
               {note ? "Update" : "Add"}
             </Button>
-            {/* Дугме за откажување */}
             <Button
               onClick={() => navigate("/notes")}
               variant="outlined"
@@ -267,21 +253,20 @@ const NoteEditor: React.FC<NoteEditorProps> = ({ note }: NoteEditorProps) => {
     </Box>
   );
 };
-export default NoteEditor;
 
-// function NoteEditorWrapper() {
-//   const { noteId } = useParams();
-//   const noteQuery = useNoteQuery(noteId);
+function NoteEditorWrapper() {
+  const { noteId } = useParams();
+  const noteQuery = useNoteQuery(noteId);
 
-//   if (noteId !== undefined && noteQuery.isPending) {
-//     return <div>Loading ...</div>;
-//   }
+  if (noteId !== undefined && noteQuery.isPending) {
+    return <div>Loading ...</div>;
+  }
 
-//   if (noteId !== undefined && noteQuery.isError) {
-//     return <div style={{ color: "red" }}>Error: {noteQuery.error.message}</div>;
-//   }
+  if (noteId !== undefined && noteQuery.isError) {
+    return <div style={{ color: "red" }}>Error: {noteQuery.error.message}</div>;
+  }
 
-//   return <NoteEditor note={noteQuery.data ?? undefined} />;
-// }
+  return <NoteEditor note={noteQuery.data ?? undefined} />;
+}
 
-// export default NoteEditorWrapper;
+export default NoteEditorWrapper;
