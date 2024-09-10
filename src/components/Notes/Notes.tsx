@@ -40,7 +40,6 @@ const Notes: React.FC<NotesProps> = ({ searchQuery = "" }) => {
 
   // Преземање на белешките и дефинирање на мутации за креирање и ажурирање
   const notesQuery = useNotesQuery();
-  const createNoteMutation = useCreateNoteMutation();
 
   // Отворање и затворање на мени за акција (копирање или испраќање белешка преку е-пошта)
   const handleOpenMenu = (event: React.MouseEvent<HTMLElement>, note: Note) => {
@@ -76,8 +75,6 @@ const Notes: React.FC<NotesProps> = ({ searchQuery = "" }) => {
       {/* Секција за прикажување на сите белешки во форма на карти */}
       <Box sx={{ padding: 2 }}>
         <Grid container spacing={2}>
-          {notesQuery.isPending && <Box>LOADING ...</Box>}
-          {createNoteMutation.isPending && <Box>CREATING...</Box>}
           {notesQuery.data
             ?.filter(
               (note) =>

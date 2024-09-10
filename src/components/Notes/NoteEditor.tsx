@@ -36,13 +36,13 @@ const schema = z.object({
 });
 
 export type Schema = z.infer<typeof schema>;
-
 type NoteEditorProps = {
   note?: Note;
 };
 
 // Компонента за уредување на белешки
 const NoteEditor: React.FC<NoteEditorProps> = ({ note }: NoteEditorProps) => {
+  // rhf
   const {
     register,
     handleSubmit,
